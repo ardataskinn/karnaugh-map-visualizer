@@ -65,18 +65,18 @@ function mintermToCellPos(m) {
   const B = (m >>> 2) & 1;
   const C = (m >>> 1) & 1;
   const D = m & 1;
-  const colCode = (A << 1) | B;
-  const rowCode = (C << 1) | D;
+  const rowCode = (A << 1) | B;
+  const colCode = (C << 1) | D;
   return { r: gray2.indexOf(rowCode), c: gray2.indexOf(colCode) };
 }
 
 function cellPosToMinterm(r, c) {
   const rowCode = gray2[r];
   const colCode = gray2[c];
-  const C = (rowCode >>> 1) & 1;
-  const D = rowCode & 1;
-  const A = (colCode >>> 1) & 1;
-  const B = colCode & 1;
+  const A = (rowCode >>> 1) & 1;
+  const B = rowCode & 1;
+  const C = (colCode >>> 1) & 1;
+  const D = colCode & 1;
   return (A << 3) | (B << 2) | (C << 1) | D;
 }
 
@@ -385,19 +385,17 @@ function parseTruthSequence(text) {
 function setKmapCornerLabel() {
   const corner = $("#kmapCornerLabel");
   const [A, B, C, D] = appState.varNames;
-  corner.textContent = `Satır: ${C}${D}  |  Sütun: ${A}${B}`;
+  const ab = corner?.querySelector(".cornerAB");
+  const cd = corner?.querySelector(".cornerCD");
+  if (ab) ab.textContent = `${A}${B}`;
+  if (cd) cd.textContent = `${C}${D}`;
 }
 
 function setTruthOrderHint() {
   const hint = $("#truthOrderHint");
   if (!hint) return;
   const [A, B, C, D] = appState.varNames;
-  const patterns = [];
-  for (let m = 0; m < total; m++) {
-    const bits = mintermToBits(m).join("");
-    patterns.push(bits);
-  }
-  hint.textContent = `Sıra: ${A} ${B} ${C} ${D} için m=0..${total - 1}: ${patterns.join(" ")}`;
+  hint.textContent = `Sıra: ${A}${B}${C}${D}. Örn: m=1 → 0001`;
 }
 
 function cycleCellValue(v) {
@@ -437,19 +435,20 @@ function renderKmap() {
   grid.style.gridTemplateRows = `40px repeat(${R}, ${cellH}px)`;
 
   const corner = document.createElement("div");
-  corner.className = "kcorner";
+  corner.className = "kcorner kcornerDiag";
   corner.id = "kmapCornerLabel";
+  corner.innerHTML = `<span class="cornerAB"></span><span class="cornerCD"></span>`;
   grid.appendChild(corner);
 
   const colCodes = gray2.map((code) => {
-    const A = (code >>> 1) & 1;
-    const B = code & 1;
-    return `${A}${B}`;
-  });
-  const rowCodes = gray2.map((code) => {
     const Cb = (code >>> 1) & 1;
     const Db = code & 1;
     return `${Cb}${Db}`;
+  });
+  const rowCodes = gray2.map((code) => {
+    const A = (code >>> 1) & 1;
+    const B = code & 1;
+    return `${A}${B}`;
   });
 
   for (let c = 0; c < C; c++) {
@@ -511,6 +510,62 @@ function renderKmapValuesForAll() {
   }
 }
 
+function renderTruthTableUI() {
+  const wrap = $("#truthTableWrap");
+  if (!wrap) return;
+  wrap.innerHTML = "";
+
+  const [A, B, C, D] = appState.varNames;
+  const table = document.createElement("table");
+  table.className = "truthTable";
+  table.innerHTML = `
+    <thead>
+      <tr>
+        <th>m</th>
+        <th>${A}</th>
+        <th>${B}</th>
+        <th>${C}</th>
+        <th>${D}</th>
+        <th>F</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  `;
+  const tbody = table.querySelector("tbody");
+
+  for (let m = 0; m < total; m++) {
+    const bits = mintermToBits(m);
+    const v = appState.outputs[m];
+    const vStr = v === "X" ? "X" : String(v);
+    const tr = document.createElement("tr");
+    tr.innerHTML = `
+      <td>${m}</td>
+      <td>${bits[0]}</td>
+      <td>${bits[1]}</td>
+      <td>${bits[2]}</td>
+      <td>${bits[3]}</td>
+      <td><button type="button" class="truthOutBtn" data-m="${m}" data-v="${vStr}">${vStr}</button></td>
+    `;
+    tbody.appendChild(tr);
+  }
+
+  wrap.appendChild(table);
+
+  const btns = wrap.querySelectorAll(".truthOutBtn");
+  for (const btn of btns) {
+    btn.addEventListener("click", () => {
+      const m = Number(btn.dataset.m);
+      const current = btn.dataset.v || "X";
+      const next = current === "X" ? "0" : current === "0" ? "1" : "X";
+      btn.dataset.v = next;
+      btn.textContent = next;
+      appState.outputs[m] = next === "X" ? "X" : Number(next);
+      renderKmapValuesForAll();
+      computeAndRender();
+    });
+  }
+}
+
 function updateHighlightsFromTerms(terms) {
   const cellMaxArea = new Array(total).fill(0);
   if (terms && terms.length) {
@@ -554,13 +609,13 @@ function renderVarNameInputs() {
       appState.varNames[i] = v || `V${i + 1}`;
       setKmapCornerLabel();
       setTruthOrderHint();
-      const seq = $("#truthSequence");
-      if (seq && seq.dataset.dirty === "1") return;
+      renderTruthTableUI();
       computeAndRender();
     });
     wrap.appendChild(row);
   }
   setTruthOrderHint();
+  renderTruthTableUI();
 }
 
 function setExpression(text) {
@@ -596,17 +651,7 @@ function setOutputs(outputs) {
 }
 
 function parsePanelTruthAndApply() {
-  const seqText = $("#truthSequence").value;
-  const parsed = parseTruthSequence(seqText);
-  if (!parsed) {
-    showError("Truth table dizisi hatalı. 16 eleman (0/1/X) beklenir.");
-    return;
-  }
-  if (setOutputs(parsed)) {
-    $("#truthSequence").dataset.dirty = "0";
-    return;
-  }
-  showError("Truth table uygulanamadı.");
+  computeAndRender();
 }
 
 function parsePanelSopAndApply() {
@@ -784,12 +829,8 @@ function wireUI() {
   $("#resetAllBtn").addEventListener("click", () => {
     appState.outputs = new Array(total).fill("X");
     renderKmapValuesForAll();
-    $("#truthSequence").value = new Array(total).fill("X").join(" ");
+    renderTruthTableUI();
     computeAndRender();
-  });
-
-  $("#truthSequence").addEventListener("input", () => {
-    $("#truthSequence").dataset.dirty = "1";
   });
 }
 
@@ -797,7 +838,6 @@ function init() {
   renderLegend();
   renderKmap();
   initVarNamesUI();
-  $("#truthSequence").value = new Array(total).fill("X").join(" ");
   wireUI();
   computeAndRender();
 }

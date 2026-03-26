@@ -50,6 +50,20 @@ body{
   gap: 10px;
 }
 
+.brandRow{
+  display:flex;
+  align-items:center;
+  gap: 10px;
+}
+.brandLogo{
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: #ffffff;
+  object-fit: cover;
+}
+
 .title{
   font-weight: 800;
   font-size: 18px;
@@ -128,6 +142,30 @@ body{
   gap: 10px;
 }
 
+.kmapRow{
+  width: min(980px, 100%);
+  display:flex;
+  gap: 12px;
+  align-items: stretch;
+}
+.kmapRow > .kmapCard{
+  flex: 0 0 auto;
+}
+.kmapHelp{
+  flex: 0 0 280px;
+  background: #ffffff;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  box-shadow: 0 10px 28px var(--shadow);
+  padding: 14px;
+  color: var(--muted);
+  font-weight: 900;
+  font-size: 13px;
+  line-height: 1.35;
+  display:flex;
+  align-items:center;
+}
+
 .legend{
   display:flex;
   gap: 18px;
@@ -202,6 +240,33 @@ body{
   width: 160px;
 }
 
+.kcornerDiag{
+  position: relative;
+  overflow: hidden;
+}
+.kcornerDiag::after{
+  content:"";
+  position:absolute;
+  inset: 0;
+  background:
+    linear-gradient(135deg, transparent 49%, rgba(71,85,105,.35) 50%, transparent 51%);
+  pointer-events:none;
+}
+.cornerAB{
+  position:absolute;
+  bottom: 8px;
+  left: 16px;
+  font-weight: 950;
+  color: var(--muted);
+}
+.cornerCD{
+  position:absolute;
+  top: 10px;
+  right: 14px;
+  font-weight: 950;
+  color: var(--muted);
+}
+
 .kheader{
   cursor: default;
   background: #f8fafc;
@@ -273,6 +338,16 @@ body{
   display:none;
 }
 
+.truthRow{
+  display:flex;
+  gap: 12px;
+  align-items:start;
+  overflow-x: auto;
+}
+.truthRow > .truthTableWrap{
+  flex: 0 0 auto;
+}
+
 .field{
   display:flex;
   flex-direction:column;
@@ -307,6 +382,65 @@ body{
   font-size: 12px;
   line-height: 1.35;
   margin-top: 6px;
+}
+
+.truthTableWrap{
+  overflow:auto;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: #ffffff;
+  min-width: 640px;
+}
+.truthTable{
+  width:100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+.truthTable th, .truthTable td{
+  border-bottom: 1px solid var(--border);
+  padding: 10px 10px;
+  text-align: center;
+}
+.truthTable th{
+  position: sticky;
+  top: 0;
+  background: #f8fafc;
+  color: var(--muted);
+  font-weight: 900;
+}
+.truthOutBtn{
+  width: 48px;
+  height: 34px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  font-weight: 950;
+  cursor: pointer;
+  background: #ffffff;
+}
+.truthOutBtn[data-v="X"]{ background: rgba(245, 158, 11, .25); }
+.truthOutBtn[data-v="0"]{ background: rgba(148, 163, 184, .30); }
+.truthOutBtn[data-v="1"]{ background: rgba(34, 197, 94, .25); }
+
+.siteFooter{
+  margin-top: 14px;
+  text-align:center;
+  color: var(--muted);
+  font-weight: 800;
+  font-size: 12px;
+}
+.siteFooter a{
+  color: #1d4ed8;
+  text-decoration: none;
+}
+.siteFooter a:hover{
+  text-decoration: underline;
+}
+
+@media (max-width: 860px){
+  .kmapRow{ flex-direction: column; }
+  .kmapHelp{ flex-basis: auto; width: 100%; }
+  .truthRow{ flex-direction: column; overflow-x: visible; }
+  .truthTableWrap{ min-width: 0; width: 100%; }
 }
 
 .actions{

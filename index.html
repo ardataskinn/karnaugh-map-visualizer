@@ -3,114 +3,40 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Karnaugh Haritası Sadeleştirici</title>
-    <link rel="stylesheet" href="./styles.css" />
+    <title>Karnaugh Map Sadeleştirici</title>
+    <meta name="robots" content="index,follow" />
+    <meta http-equiv="refresh" content="0; url=./app.html" />
+    <link rel="icon" type="image/png" href="./kmap.png" />
   </head>
   <body>
-    <div class="app">
-      <header class="topbar">
-        <div class="brand">
-          <div class="title">Karnaugh Haritası Sadeleştirici</div>
-          <div class="varNameInputs" id="varNameInputs"></div>
-        </div>
-
-        <div class="exprMode">
-          <div class="label">Çıktı</div>
-          <div class="segmented" role="group" aria-label="Expression mode">
-            <button class="segbtn is-active" id="exprModeSOP" type="button">SOP</button>
-            <button class="segbtn" id="exprModePOS" type="button">POS</button>
-          </div>
-        </div>
-      </header>
-
-      <main class="center">
-        <div class="legend" id="legend"></div>
-        <div class="kmapCard">
-          <div id="kmapContainer"></div>
-        </div>
-      </main>
-
-      <section class="resultCard" aria-live="polite">
-        <div class="resultLabel">Fonksiyon</div>
-        <div id="expressionBox" class="expression">F = ?</div>
-      </section>
-
-      <footer class="bottom">
-        <div class="inputModeSegment segmented" role="group" aria-label="Input mode">
-          <button class="segbtn is-active" id="inputBtnTruth" type="button">Truth Table</button>
-          <button class="segbtn" id="inputBtnSop" type="button">SOP Gir</button>
-          <button class="segbtn" id="inputBtnPos" type="button">POS Gir</button>
-          <button class="segbtn" id="inputBtnString" type="button">String (İfade)</button>
-        </div>
-
-        <div class="panel" id="panelTruth">
-          <div class="field">
-            <label for="truthSequence">0/1/X dizisi (m sırası: A B C D)</label>
-            <div class="hint" id="truthOrderHint"></div>
-            <textarea
-              id="truthSequence"
-              rows="3"
-              placeholder="Örn: X X X X 1 0 X ... (16 eleman)"
-            ></textarea>
-          </div>
-          <div class="actions">
-            <button class="btn primary" id="applyTruthBtn" type="button">Uygula & Hesapla</button>
-          </div>
-        </div>
-
-        <div class="panel is-hidden" id="panelSop">
-          <div class="field">
-            <label for="onesInput">F=1 mintermleri (Σm)</label>
-            <input id="onesInput" type="text" placeholder="Örn: Σm(1,3,7,8) ya da 1,3,7,8" />
-          </div>
-          <div class="field">
-            <label for="dcInputSop">Don't care (X) (Σd)</label>
-            <input id="dcInputSop" type="text" placeholder="Örn: Σd(2,5,6) (boş olabilir)" />
-          </div>
-          <div class="actions">
-            <button class="btn primary" id="applySopBtn" type="button">Uygula & Hesapla</button>
-          </div>
-        </div>
-
-        <div class="panel is-hidden" id="panelPos">
-          <div class="field">
-            <label for="zerosInput">F=0 maxterimleri (ΣM)</label>
-            <input id="zerosInput" type="text" placeholder="Örn: ΣM(0,2,4,6) ya da 0,2,4,6" />
-          </div>
-          <div class="field">
-            <label for="dcInputPos">Don't care (X) (Σd)</label>
-            <input id="dcInputPos" type="text" placeholder="Örn: Σd(1,3) (boş olabilir)" />
-          </div>
-          <div class="actions">
-            <button class="btn primary" id="applyPosBtn" type="button">Uygula & Hesapla</button>
-          </div>
-        </div>
-
-        <div class="panel is-hidden" id="panelString">
-          <div class="field">
-            <label for="stringInput">İfade (SOP): örn. A'BC + ABC + BC</label>
-            <textarea
-              id="stringInput"
-              rows="3"
-              placeholder="A'BC + ABC + BC"
-            ></textarea>
-          </div>
-          <div class="actions">
-            <button class="btn primary" id="applyStringBtn" type="button">Uygula & Hesapla</button>
-          </div>
-        </div>
-
-        <div class="bottomActions">
-          <button class="btn" id="resetAllBtn" type="button">Tüm hücreleri X yap</button>
-          <button class="btn primary" id="computeBtn" type="button">Hesapla</button>
-        </div>
-      </footer>
-    </div>
-
-    <script src="./app.js"></script>
+    <noscript>
+      Bu sayfayı görüntülemek için JavaScript gerekli. Açmak için: <a href="./app.html">app.html</a>
+    </noscript>
+    <script>
+      window.location.replace("./app.html");
+    </script>
   </body>
 </html>
-<!--
+
+<!doctype html>
+<html lang="tr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Karnaugh Map Sadeleştirici</title>
+    <meta http-equiv="refresh" content="0; url=./app.html" />
+    <link rel="icon" type="image/png" href="./kmap.png" />
+  </head>
+  <body>
+    <noscript>
+      Bu sayfayı görüntülemek için JavaScript gerekli. Açmak için: <a href="./app.html">app.html</a>
+    </noscript>
+    <script>
+      window.location.replace("./app.html");
+    </script>
+  </body>
+</html>
+
 <!doctype html>
 <html lang="tr">
   <head>
