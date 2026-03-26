@@ -1,0 +1,345 @@
+:root{
+  --bg: #ffffff;
+  --panel: #f3f4f6;
+  --panel2: #ffffff;
+  --text: #0f172a;
+  --muted: #475569;
+  --border: #e5e7eb;
+  --shadow: rgba(15, 23, 42, 0.08);
+
+  --one: rgba(34, 197, 94, .85);
+  --zero: rgba(148, 163, 184, .45);
+  --dc: rgba(245, 158, 11, .65);
+
+  --group-1: rgba(239, 68, 68, .25);
+  --group-2: rgba(59, 130, 246, .25);
+  --group-4: rgba(16, 185, 129, .25);
+  --group-8: rgba(168, 85, 247, .25);
+  --group-16: rgba(234, 179, 8, .25);
+}
+
+*{ box-sizing:border-box; }
+html, body{
+  height:100%;
+}
+body{
+  margin:0;
+  font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+}
+
+.app{
+  min-height: 100%;
+  display:flex;
+  flex-direction:column;
+}
+
+.topbar{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+  gap: 16px;
+  padding: 18px 18px 8px;
+  border-bottom: 1px solid var(--border);
+}
+
+.brand{
+  display:flex;
+  flex-direction:column;
+  gap: 10px;
+}
+
+.title{
+  font-weight: 800;
+  font-size: 18px;
+}
+
+.varNameInputs{
+  display:flex;
+  gap: 10px;
+  flex-wrap:wrap;
+}
+
+.varNameRow{
+  display:flex;
+  align-items:center;
+  gap: 8px;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  padding: 8px 10px;
+  border-radius: 12px;
+}
+
+.varNameRow label{
+  font-size: 13px;
+  color: var(--muted);
+  font-weight: 700;
+}
+
+.varNameRow input{
+  width: 80px;
+  padding: 7px 10px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: var(--panel2);
+  outline: none;
+  font-size: 13px;
+}
+
+.exprMode{
+  display:flex;
+  flex-direction:column;
+  gap: 8px;
+  align-items:flex-end;
+}
+.exprMode .label{
+  color: var(--muted);
+  font-weight: 700;
+  font-size: 13px;
+}
+
+.segmented{
+  display:flex;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow:hidden;
+  background: var(--panel);
+}
+.segbtn{
+  flex:1;
+  padding: 10px 12px;
+  border:0;
+  background: transparent;
+  cursor:pointer;
+  font-weight: 800;
+  color: var(--muted);
+}
+.segbtn.is-active{
+  background: #e0e7ff;
+  color: #1d4ed8;
+}
+
+.center{
+  padding: 14px 18px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap: 10px;
+}
+
+.legend{
+  display:flex;
+  gap: 18px;
+  flex-wrap:wrap;
+  justify-content:center;
+  color: var(--muted);
+  font-weight: 700;
+  font-size: 13px;
+}
+.legendItem{
+  display:flex;
+  align-items:center;
+  gap: 8px;
+}
+.swatch{
+  width: 14px;
+  height: 14px;
+  border-radius: 4px;
+  border: 1px solid rgba(15, 23, 42, .18);
+}
+
+.kmapCard{
+  width: min(880px, 100%);
+  background: #ffffff;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  box-shadow: 0 10px 28px var(--shadow);
+  padding: 14px;
+}
+
+.kmapGrid{
+  display:grid;
+  background: #ffffff;
+  border-radius: 14px;
+  padding: 8px;
+  border: 1px solid var(--border);
+}
+
+.kcell{
+  width: 92px;
+  height: 66px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  position:relative;
+  user-select:none;
+  cursor:pointer;
+  font-weight: 900;
+  font-size: 18px;
+  background: #ffffff;
+}
+
+.kcell[data-base="1"]{ background: var(--one); }
+.kcell[data-base="0"]{ background: var(--zero); }
+.kcell[data-base="X"]{ background: var(--dc); }
+.kcell[data-base="-"]{ background: #ffffff; cursor:default; }
+
+.kcell:hover{
+  transform: translateY(-1px);
+}
+
+.kcorner{
+  cursor: default;
+  background: #f8fafc;
+  font-size: 14px;
+  color: var(--muted);
+  text-align:left;
+  padding: 8px 10px;
+  line-height: 1.2;
+  width: 160px;
+}
+
+.kheader{
+  cursor: default;
+  background: #f8fafc;
+  font-weight: 900;
+  color: var(--muted);
+  font-size: 15px;
+}
+
+.kcell .overlay{
+  position:absolute;
+  inset: 0;
+  border-radius: 12px;
+  pointer-events:none;
+  opacity:0;
+  z-index: 0;
+}
+.kcell .overlay.is-on{
+  opacity:1;
+}
+.kcell .cellVal{
+  position:relative;
+  z-index: 1;
+}
+.overlay[data-area="1"]{ background: var(--group-1); }
+.overlay[data-area="2"]{ background: var(--group-2); }
+.overlay[data-area="4"]{ background: var(--group-4); }
+.overlay[data-area="8"]{ background: var(--group-8); }
+.overlay[data-area="16"]{ background: var(--group-16); }
+
+.resultCard{
+  margin: 0 18px 16px;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 12px 16px;
+  box-shadow: 0 10px 28px var(--shadow);
+}
+.resultLabel{
+  color: var(--muted);
+  font-weight: 800;
+  font-size: 13px;
+}
+.expression{
+  margin-top: 6px;
+  font-weight: 950;
+  font-size: 20px;
+  color: #0b1220;
+}
+
+.bottom{
+  border-top: 1px solid var(--border);
+  padding: 14px 18px 18px;
+}
+
+.inputModeSegment{
+  max-width: 880px;
+  margin: 0 auto 10px;
+}
+
+.panel{
+  max-width: 880px;
+  margin: 0 auto;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 12px;
+}
+.panel.is-hidden{
+  display:none;
+}
+
+.field{
+  display:flex;
+  flex-direction:column;
+  gap: 7px;
+  margin-bottom: 12px;
+}
+.field label{
+  font-weight: 900;
+  font-size: 13px;
+  color: var(--muted);
+}
+.field input, .field textarea{
+  border: 1px solid var(--border);
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 10px 12px;
+  font-size: 14px;
+  outline:none;
+}
+.field input{
+  height: 42px;
+}
+.field textarea{
+  width:100%;
+  resize: vertical;
+  min-height: 70px;
+}
+
+.hint{
+  color: var(--muted);
+  font-weight: 800;
+  font-size: 12px;
+  line-height: 1.35;
+  margin-top: 6px;
+}
+
+.actions{
+  display:flex;
+  justify-content:flex-end;
+}
+.btn{
+  cursor:pointer;
+  border: 1px solid var(--border);
+  background: #ffffff;
+  color: #111827;
+  font-weight: 900;
+  padding: 10px 14px;
+  border-radius: 12px;
+}
+.btn.primary{
+  background: #1d4ed8;
+  border-color: #1d4ed8;
+  color: white;
+}
+.btn:hover{
+  filter: brightness(.98);
+}
+
+.bottomActions{
+  margin-top: 12px;
+  display:flex;
+  justify-content:space-between;
+  gap: 10px;
+}
+
+@media (max-width: 860px){
+  .kcell{ width: 72px; height: 52px; font-size: 16px; }
+  .kcorner{ width: 130px; }
+}
+
